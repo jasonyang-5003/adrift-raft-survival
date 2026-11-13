@@ -2,6 +2,10 @@
 
 面向手机横屏的 3D 木筏生存游戏原型，支持电脑浏览器。资源全部在本地，不依赖网络。
 
+- 在线试玩：https://adrift-raft-survival.pages.dev
+- 源码仓库：https://github.com/jasonyang-5003/adrift-raft-survival （私有仓库）
+- 托管：Cloudflare Pages；生产分支为 `main`，推送后自动构建发布。
+
 ## 开始游玩
 
 电脑可直接用 Chrome / Edge 打开 `index.html`。推荐通过本地服务游玩；在此文件夹执行：
