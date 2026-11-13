@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#142d32">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231a3c40'/%3E%3Ctext x='9' y='46' font-size='54' fill='%23efc77b'%3E≈%3C/text%3E%3C/svg%3E">
+  <title>浮生 · 海上日记</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="vendor/three.min.js"></script>
+  <script defer src="game.js"></script>
+</head>
+<body>
+  <canvas id="world" aria-label="木筏求生 3D 游戏场景"></canvas>
+  <div id="vignette"></div>
+  <div id="hud">
+    <header>
+      <div class="brand"><span class="brand-mark">≈</span><div>浮 生<small>ADRIFT · 海上日记</small></div><span class="version">试玩版 01</span></div>
+      <div class="day-pill"><i data-icon="sun"></i><span id="dayText">第 01 天</span><b id="timeText">08:00</b></div>
+      <div class="header-right"><span class="currency"><i data-icon="coin"></i><b id="coins">0</b><small>贝币</small></span><button class="icon-button" id="settingsBtn" aria-label="设置与存档"><i data-icon="settings"></i></button></div>
+    </header>
+    <aside class="survival">
+      <div class="stat health"><i data-icon="heart"></i><div><label>生命<span id="healthText">100</span></label><div class="bar"><b id="healthBar"></b></div></div></div>
+      <div class="stat hunger"><i data-icon="food"></i><div><label>饱腹<span id="hungerText">85</span></label><div class="bar"><b id="hungerBar"></b></div></div></div>
+      <div class="stat thirst"><i data-icon="drop"></i><div><label>饮水<span id="thirstText">80</span></label><div class="bar"><b id="thirstBar"></b></div></div></div>
+      <div class="stat energy"><i data-icon="bolt"></i><div><label>体力<span id="energyText">100</span></label><div class="bar"><b id="energyBar"></b></div></div></div>
+      <div id="conditions" class="conditions">海风正好 · 状态良好</div>
+    </aside>
+    <aside class="journey" id="questPanel"><div class="eyebrow">漂流手记 <span id="questIndex">01 / 05</span></div><h3 id="questTitle">向大海借一份晚餐</h3><p id="questDesc">完成 3 次海钓</p><div class="quest-bottom"><div class="bar"><b id="questBar"></b></div><span id="questProgress">0/3</span></div><button id="claimQuest" class="small-button hidden">领取奖励</button></aside>
+    <div class="location"><span class="live-dot"></span> 浅蓝海域 <span>·</span> <b id="raftLabel">I 级漂流木筏</b></div>
+    <div id="eventBanner" class="event-banner hidden"></div>
+    <div id="toasts" aria-live="polite"></div>
+    <div class="fish-panel hidden" id="fishPanel"><div class="fish-head"><i data-icon="fish"></i><strong id="fishTitle">等待海的回应…</strong><span id="fishHint">留意浮漂</span></div><div class="tension-track"><div class="safe-zone"></div><div id="tensionFill"></div><b id="tensionMarker"></b></div><div class="fish-progress"><b id="fishProgress"></b></div><small id="fishHelp">鱼咬钩时，点击收杆</small><button id="cutLine">切线离开</button></div>
+    <div class="build-panel hidden" id="buildPanel"><div><strong id="buildTitle">扩建地板</strong><small id="buildHelp">点击绿色格子选择位置</small></div><button id="buildConfirm" class="primary">确认建造</button><button id="buildCancel" class="icon-button" aria-label="取消建造">×</button></div>
+    <div class="controls">
+      <div id="joystick" aria-label="移动摇杆"><div class="joystick-cross"></div><span id="stick"></span><small>移动</small></div>
+      <nav class="dock">
+        <button data-panel="inventory"><i data-icon="bag"></i><span>背包</span></button>
+        <button data-panel="craft"><i data-icon="hammer"></i><span>制作</span></button>
+        <button data-panel="build"><i data-icon="house"></i><span>建造</span></button>
+        <button data-panel="shop"><i data-icon="shop"></i><span>商人</span></button>
+        <button data-panel="cards" class="card-nav"><i data-icon="cards"></i><span>祈愿</span><b id="ticketBadge">1</b></button>
+      </nav>
+      <div class="right-controls"><div class="quick-items"><button id="eatBtn" aria-label="吃食物"><i data-icon="food"></i><b id="foodCount">0</b></button><button id="drinkBtn" aria-label="喝净水"><i data-icon="drop"></i><b id="waterCount">0</b></button><button id="sleepBtn" aria-label="结束当天并休息"><i data-icon="moon"></i></button></div><div class="action-wrap"><button id="actionBtn"><i data-icon="hook"></i><span id="actionLabel">抛竿</span></button><div class="rod-durability"><span id="rodLevel">鱼竿 I</span><b id="rodText">40/40</b><div class="bar"><b id="rodBar"></b></div></div></div></div>
+    </div>
+    <div class="desktop-hint">WASD 移动 <span>·</span> 空格 钓鱼 / 攻击 <span>·</span> 拖动海面转动视角</div>
+  </div>
+  <div class="modal-layer hidden" id="modalLayer"><section id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-top"><div><div class="eyebrow" id="modalEyebrow">漂流生活</div><h2 id="modalTitle"></h2></div><button id="closeModal" class="icon-button" aria-label="关闭">×</button></div><div id="modalBody"></div></section></div>
+  <div id="startScreen" class="start-screen"><div class="start-content"><div class="eyebrow">A LITTLE RAFT. AN ENDLESS OCEAN.</div><h1>浮 生<span>海 上 日 记</span></h1><p class="start-intro">世界只剩下海，而你还有一块木筏。<br>抛下一根鱼线，慢慢把日子过成家。</p><div id="startButtons"><button id="newGameBtn" class="primary start-button">开始漂流 <span>↗</span></button><button id="continueBtn" class="secondary hidden">继续上次的旅程</button></div><small class="start-caption">3D 生存 · 海钓 · 建造 <span>推荐横屏 · 戴上耳机</span></small></div><div class="start-bottom"><span>一方木筏，自有天地。</span><span>CHAPTER 01 / 向海而生</span></div></div>
+  <div id="rotateHint"><i data-icon="rotate"></i><span>横过手机，海更宽一些</span><button id="dismissRotate">继续竖屏体验</button></div>
+  <div id="fatal" class="hidden"></div>
+</body>
+</html>

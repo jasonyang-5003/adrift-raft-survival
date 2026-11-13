@@ -1,0 +1,11 @@
+{
+  "name": "adrift-raft-survival",
+  "version": "0.1.0",
+  "private": true,
+  "description": "浮生 · 海上日记 — 手机优先的 3D 木筏生存游戏",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "python -m http.server 8000 --bind 0.0.0.0 --directory dist"
+  },
+  "engines": { "node": ">=18" }
+}
